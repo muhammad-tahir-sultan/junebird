@@ -25,6 +25,7 @@ dist-ssr
 
 # Firebase and Secrets
 scripts/serviceAccount.json
+*.csv
 .env
 .env.local
 .env.*.local
