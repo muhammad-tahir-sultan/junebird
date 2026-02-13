@@ -14,12 +14,50 @@ const Checkout = () => {
         name: ""
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/16140274/uekqixn/";
+
         if (formData.name && items.length > 0) {
-            setIsSubmitted(true);
-            // In a real app, we'd send the order here. 
-            // We'll clear the cart after the success message is shown or on navigation.
+            try {
+                const { collection, addDoc, serverTimestamp } = await import("firebase/firestore");
+                const { db } = await import("@/firebaseConfig");
+
+                const now = new Date().toLocaleString();
+
+                // Save to Firebase AND Send to Webhook for each item
+                const processOrders = items.map(async (item) => {
+                    // 1. Firebase Save
+                    const firebasePromise = addDoc(collection(db, "order_records"), {
+                        customerName: formData.name,
+                        itemName: item.name,
+                        quantity: item.quantity,
+                        category: item.category,
+                        timestamp: serverTimestamp(),
+                    });
+
+                    // 2. Zapier Webhook (Individual request per item for individual sheet rows)
+                    const webhookPromise = fetch(ZAPIER_WEBHOOK_URL, {
+                        method: "POST",
+                        mode: "no-cors", // Use no-cors to avoid preflight issues with Zapier hooks
+                        body: JSON.stringify({
+                            Name: formData.name,
+                            Timestamp: now,
+                            Item: item.name,
+                            Quantity: item.quantity,
+                            Category: item.category
+                        })
+                    });
+
+                    return Promise.all([firebasePromise, webhookPromise]);
+                });
+
+                await Promise.all(processOrders);
+                setIsSubmitted(true);
+            } catch (error) {
+                console.error("Error submitting order:", error);
+                alert("There was an error placing your order. Please try again.");
+            }
         }
     };
 
