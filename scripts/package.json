@@ -1,0 +1,15 @@
+{
+  "name": "csv-to-firestore",
+  "version": "1.0.0",
+  "description": "Upload CSV menu data to Firebase Firestore",
+  "type": "module",
+  "scripts": {
+    "upload": "node uploadMenu.js",
+    "fetch-urls": "node fetchImageUrls.js",
+    "update-urls": "node updateImageUrls.js"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "firebase-admin": "^13.0.0"
+  }
+}

@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 97%;
+    --foreground: 30 10% 15%;
+
+    --card: 40 30% 95%;
+    --card-foreground: 30 10% 15%;
+
+    --popover: 40 33% 97%;
+    --popover-foreground: 30 10% 15%;
+
+    --primary: 30 10% 15%;
+    --primary-foreground: 40 33% 97%;
+
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 30 10% 25%;
+
+    --muted: 40 15% 90%;
+    --muted-foreground: 30 8% 50%;
+
+    --accent: 145 30% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 35 20% 88%;
+    --input: 35 20% 88%;
+    --ring: 30 10% 15%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Custom tokens */
+    --badge-new: 145 30% 42%;
+    --badge-new-foreground: 0 0% 100%;
+    --nav-bg: 40 33% 97%;
+    --hero-heading: 30 10% 15%;
+  }
+
+  .dark {
+    --background: 30 10% 8%;
+    --foreground: 40 20% 92%;
+    --card: 30 10% 12%;
+    --card-foreground: 40 20% 92%;
+    --popover: 30 10% 8%;
+    --popover-foreground: 40 20% 92%;
+    --primary: 40 20% 92%;
+    --primary-foreground: 30 10% 8%;
+    --secondary: 30 8% 18%;
+    --secondary-foreground: 40 20% 92%;
+    --muted: 30 8% 18%;
+    --muted-foreground: 30 8% 55%;
+    --accent: 145 30% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 30 8% 20%;
+    --input: 30 8% 20%;
+    --ring: 40 20% 92%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .menu-card {
+    @apply relative overflow-hidden rounded-xl bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer;
+  }
+
+  .menu-card-image {
+    @apply w-full aspect-square object-cover transition-transform duration-500;
+  }
+
+  .category-pill {
+    @apply px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer border;
+  }
+
+  .category-pill-active {
+    @apply bg-primary text-primary-foreground border-primary;
+  }
+
+  .category-pill-inactive {
+    @apply bg-transparent text-foreground border-border hover:bg-secondary;
+  }
+
+  .badge-new {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent text-accent-foreground;
+  }
+
+  .badge-category {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground;
+  }
+}
