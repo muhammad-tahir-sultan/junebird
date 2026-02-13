@@ -5,6 +5,30 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const ProductDetailSkeleton = () => (
+  <div className="max-w-7xl mx-auto px-6 py-12">
+    <Skeleton className="h-full w-screen  mb-8" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <Skeleton className="aspect-square w-full rounded-lg" />
+      <div className="flex flex-col gap-8">
+        <div>
+          <Skeleton className="h-12 w-3/4 mb-4" />
+          <Skeleton className="h-8 w-24 mb-6" />
+          <Skeleton className="h-4 w-full mb-2" />
+          <Skeleton className="h-4 w-full mb-2" />
+          <Skeleton className="h-4 w-2/3" />
+        </div>
+        <div className="flex flex-col gap-4">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-12 w-32" />
+        </div>
+        <Skeleton className="h-14 w-full md:w-48" />
+      </div>
+    </div>
+  </div>
+);
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -15,11 +39,7 @@ const ProductDetail = () => {
   const product = menuItems.find((item) => item.slug === slug);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <p className="text-lg text-muted-foreground">Loading product...</p>
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (error) {

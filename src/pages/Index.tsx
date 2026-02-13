@@ -1,8 +1,19 @@
 import { useState, useMemo } from "react";
 import CategoryFilter from "@/components/CategoryFilter";
 import MenuCard from "@/components/MenuCard";
-import { useMenuData } from "@/hooks/useMenuData";
 import { motion } from "framer-motion";
+import { useMenuData } from "@/hooks/useMenuData";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const MenuCardSkeleton = () => (
+  <div className="flex flex-col gap-4">
+    <Skeleton className="aspect-square w-full rounded-none" />
+    <div className="flex flex-col gap-2">
+      <Skeleton className="h-4 w-1/3 rounded-none" />
+      <Skeleton className="h-6 w-2/3 rounded-none" />
+    </div>
+  </div>
+);
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -40,9 +51,11 @@ const Index = () => {
       {/* Menu Grid */}
       <section className="max-w-7xl mx-auto px-6 pb-16">
         {loading && (
-          <p className="text-center text-muted-foreground py-20 text-lg">
-            Loading menu...
-          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <MenuCardSkeleton key={i} />
+            ))}
+          </div>
         )}
         {error && (
           <p className="text-center text-red-500 py-20 text-lg">
