@@ -50,15 +50,22 @@ function createSlug(text) {
 // ─── Storage Logic: Find & Generate URLs ──────────────
 async function getPublicUrl(fileName, storageFiles) {
     if (!fileName) return null;
-    const normalized = fileName.toLowerCase().trim();
 
-    // Find best match in storage
-    let match = storageFiles.find(f => f.toLowerCase() === normalized);
+    // Normalize string: lower case, remove punctuation/special chars, keep only alphanumeric & spaces
+    const normalize = (str) => str.toLowerCase().replace(/['"_.-]/g, ' ').replace(/\s+/g, ' ').trim();
 
+    const target = normalize(fileName);
+    const targetWithPng = normalize(fileName + ".png");
+
+    // 1. Exact Match (Clean)
+    let match = storageFiles.find(f => normalize(f) === target || normalize(f) === targetWithPng);
+
+    // 2. Fuzzy Match: Check if one contains the other (e.g. "salad.png" inside "salad bowl.png")
     if (!match) {
-        // Try adding extension
-        const withPng = normalized + ".png";
-        match = storageFiles.find(f => f.toLowerCase() === withPng);
+        match = storageFiles.find(f => {
+            const normF = normalize(f);
+            return normF.includes(target) || target.includes(normF);
+        });
     }
 
     if (match) {
