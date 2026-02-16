@@ -25,8 +25,7 @@ dist-ssr
 
 # Firebase and Secrets
 scripts/serviceAccount.json
-.env
-.env.local
 .env.*.local
 firebase-debug.log*
 .firebase/
+config.bat

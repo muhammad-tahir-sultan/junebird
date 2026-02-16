@@ -63,25 +63,27 @@ const Index = () => {
       </section>
 
       {/* Filter & Sort Container */}
-      <section className="max-w-7xl mx-auto px-6 pb-10 flex flex-col md:flex-row justify-between items-center gap-6">
+      <section className="max-w-7xl mx-auto px-6 pb-10 flex flex-col items-center gap-6">
         <CategoryFilter
           categories={categories}
           activeCategory={activeCategory}
           onCategoryChange={setActiveCategory}
         />
 
-        <div className="w-full md:w-auto min-w-[200px]">
-          <Select value={sortOrder} onValueChange={(value: "default" | "asc" | "desc") => setSortOrder(value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Sort by..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="default">Default</SelectItem>
-              <SelectItem value="category">Category Order</SelectItem>
-              <SelectItem value="asc">Name (A-Z)</SelectItem>
-              <SelectItem value="desc">Name (Z-A)</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="w-full flex justify-end">
+          <div className="w-full md:w-auto min-w-[200px]">
+            <Select value={sortOrder} onValueChange={(value: "default" | "asc" | "desc" | "category") => setSortOrder(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort by..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Default</SelectItem>
+                <SelectItem value="category">Category Order</SelectItem>
+                <SelectItem value="asc">Name (A-Z)</SelectItem>
+                <SelectItem value="desc">Name (Z-A)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </section>
 
