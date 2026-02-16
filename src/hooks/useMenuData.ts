@@ -59,6 +59,7 @@ export const useMenuData = (): UseMenuDataReturn => {
               slug: data.slug ?? "",
               name: data.name ?? "",
               category: categoryName, // Category comes from the parent document
+              categoryOrder: (categoryDoc as any).categoryOrder ?? 99,
               image: data.image_url ?? "",
               isNew: data.isNew ?? false,
               description: data.description ?? "",

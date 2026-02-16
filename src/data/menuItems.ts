@@ -3,6 +3,7 @@ export interface MenuItem {
   slug: string;
   name: string;
   category: string;
+  categoryOrder?: number;
   image: string;
   isNew: boolean;
   description: string;

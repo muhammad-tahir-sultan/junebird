@@ -4,6 +4,13 @@ import MenuCard from "@/components/MenuCard";
 import { motion } from "framer-motion";
 import { useMenuData } from "@/hooks/useMenuData";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const MenuCardSkeleton = () => (
   <div className="flex flex-col gap-4">
@@ -17,12 +24,28 @@ const MenuCardSkeleton = () => (
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [sortOrder, setSortOrder] = useState<"default" | "asc" | "desc" | "category">("default");
   const { menuItems, categories, loading, error } = useMenuData();
 
   const filteredItems = useMemo(() => {
-    if (activeCategory === "All") return menuItems;
-    return menuItems.filter((item) => item.category === activeCategory);
-  }, [activeCategory, menuItems]);
+    let items = menuItems;
+    if (activeCategory !== "All") {
+      items = menuItems.filter((item) => item.category === activeCategory);
+    }
+
+    if (sortOrder === "default") return items;
+
+    return [...items].sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.name.localeCompare(b.name);
+      } else if (sortOrder === "desc") {
+        return b.name.localeCompare(a.name);
+      } else if (sortOrder === "category") {
+        return (a.categoryOrder ?? 99) - (b.categoryOrder ?? 99);
+      }
+      return 0;
+    });
+  }, [activeCategory, menuItems, sortOrder]);
 
   return (
     <motion.div
@@ -39,13 +62,27 @@ const Index = () => {
         </h1>
       </section>
 
-      {/* Category Filters */}
-      <section className="max-w-7xl mx-auto px-6 pb-10">
+      {/* Filter & Sort Container */}
+      <section className="max-w-7xl mx-auto px-6 pb-10 flex flex-col md:flex-row justify-between items-center gap-6">
         <CategoryFilter
           categories={categories}
           activeCategory={activeCategory}
           onCategoryChange={setActiveCategory}
         />
+
+        <div className="w-full md:w-auto min-w-[200px]">
+          <Select value={sortOrder} onValueChange={(value: "default" | "asc" | "desc") => setSortOrder(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sort by..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Default</SelectItem>
+              <SelectItem value="category">Category Order</SelectItem>
+              <SelectItem value="asc">Name (A-Z)</SelectItem>
+              <SelectItem value="desc">Name (Z-A)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </section>
 
       {/* Menu Grid */}
@@ -65,7 +102,7 @@ const Index = () => {
         {!loading && !error && (
           <>
             <div
-              key={activeCategory}
+              key={`${activeCategory}-${sortOrder}`}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {filteredItems.map((item, index) => (
